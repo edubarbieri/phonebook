@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+	<script type="text/javascript">
+		function handleSaveRequest(xhr, status, args) {
+			console.log('Call handleSaveRequest');
+			console.log(status);
+			console.log(args);
+			if (args.validationFailed || args.error) {
+				PF('addressDialog').jq.effect("shake", {
+					times : 5
+				}, 100);
+			} else {
+				PF('addressDialog').hide();
+			}
+		}
+		
+		function handleAddAddressPhone(args){
+			if(args.position !== undefined){
+				jQuery('#addressCadForm\\:dtAddresPhone\\:' + args.position + '\\:edtRow .ui-icon-pencil').click();
+				setTimeout(function(){
+					jQuery('#addressCadForm\\:dtAddresPhone\\:' + args.position + '\\:txtNameAdd').focus();
+				}, 500);
+			}		
+			
+		}
+	</script>
+
+	<p:dialog id="addressDlg" widgetVar="addressDialog" modal="true" appendTo="@(body)" header="#{addressBookMBean.titlePopup} Contato"
+		resizable="false">
+		<h:form id="addressCadForm">
+			<p:growl id="growlPopUp" showDetail="true" life="10000" />
+			<div class="ui-widget">
+				<p:panelGrid id="panel">
+					<p:row>
+						<p:column>
+							<h:outputText value="Name: " />
+						</p:column>
+						<p:column colspan="4">
+							<p:inputText size="56" maxlength="40" value="#{addressBookMBean.addressEdit.name}" required="true" label="Nome" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Observação:" />
+						</p:column>
+
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Tipo Pessoa: " />
+						</p:column>
+						<p:column colspan="4">
+							<p:selectOneButton value="#{addressBookMBean.addressEdit.personType}" required="true" label="Tipo Pessoa">
+								<f:selectItems value="#{addressBookMBean.personTypes}" var="p" itemValue="#{p}" itemLabel="#{p.label}" />
+							</p:selectOneButton>
+						</p:column>
+						<p:column rowspan="6">
+							<p:column style="border-left: none; height: 198px;">
+								<p:inputTextarea value="#{addressBookMBean.addressEdit.observation}" rows="12" cols="55" />
+							</p:column>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Endereço: " />
+						</p:column>
+						<p:column colspan="4">
+							<p:inputText size="56" maxlength="70" value="#{addressBookMBean.addressEdit.address}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputText value="Cidade: " />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputText size="30" maxlength="30" value="#{addressBookMBean.addressEdit.city}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Uf: " />
+						</p:column>
+						<p:column>
+							<p:inputText size="7" maxlength="2" value="#{addressBookMBean.addressEdit.uf}" />
+						</p:column>
+
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputText value="Cep: " />
+						</p:column>
+						<p:column colspan="4">
+							<p:inputMask mask="99.999-999" value="#{addressBookMBean.addressEdit.cep}" style="width: 95px;" />
+						</p:column>
+
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Site: " />
+						</p:column>
+						<p:column colspan="4">
+							<p:inputText size="30" maxlength="30" value="#{addressBookMBean.addressEdit.site}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Telefone 1: " />
+						</p:column>
+						<p:column>
+							<p:inputMask mask="(99) 9999-9999" value="#{addressBookMBean.addressEdit.phoneOne}" style="width: 95px;" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Telefone 2: " />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputMask mask="(99) 9999-9999" value="#{addressBookMBean.addressEdit.phoneTwo}" style="width: 95px;" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+				<p:dataTable id="dtAddresPhone" value="#{addressBookMBean.addressEdit.addressPhones}" var="phone"
+					style="width: 770px; margin-top:5px;" scrollable="true" scrollHeight="150" 
+					emptyMessage="Nenhum item cadastrado." editable="true" rowIndexVar="idx">
+					<p:column headerText="Nome" style="width: 22%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{phone.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="txtNameAdd" value="#{phone.name}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+						
+					</p:column>
+					<p:column headerText="Função" style="width: 16%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{phone.function}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{phone.function}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Telefone 1" style="width: 15%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{phone.phoneOne}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputMask mask="(99) 9999-9999" value="#{phone.phoneOne}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>					
+					</p:column>
+					<p:column headerText="Telefone 2" style="width: 15%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{phone.phoneTwo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputMask mask="(99) 9999-9999" value="#{phone.phoneTwo}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>		
+					</p:column>
+					<p:column headerText="Email" style="width: 22%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{phone.email}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{phone.email}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width: 7%;">
+						<f:facet name="header">
+							<p:commandLink actionListener="#{addressBookMBean.addAddressPhone}" 
+							update="dtAddresPhone" process="dtAddresPhone" oncomplete="handleAddAddressPhone(args);">
+								<h:graphicImage library="images" name="add.png" />
+							</p:commandLink>
+						</f:facet>
+						<p:rowEditor id="edtRow"/>
+					</p:column>
+					<p:column style="width: 3%; padding: 0 0 0 0; padding-left: 3px;">
+						<p:commandLink actionListener="#{addressBookMBean.removeAddressPhone(phone)}" process="dtAddresPhone" update="dtAddresPhone">
+							<h:graphicImage library="images" name="delete.png" />
+						</p:commandLink>
+						
+					</p:column>
+				</p:dataTable>
+			</div>
+			<p:separator />
+			<div style="text-align: right;">
+				<p:commandButton value="Salvar" icon="ui-icon-check" actionListener="#{addressBookMBean.save}"
+					process=":addressCadForm" update=":addressCadForm growlPopUp :formMain:dtPerson" oncomplete="handleSaveRequest(xhr, status, args)" />
+
+				<p:commandButton style="margin-left: 5px;" value="Cancelar" icon="ui-icon-circle-close"
+					onclick="PF('addressDialog').hide();" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

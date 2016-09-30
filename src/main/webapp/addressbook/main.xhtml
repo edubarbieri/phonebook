@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml"
+	template="/WEB-INF/template.xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="contentName">
+		<h:outputText value="#{msg.agenda}" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="formMain">
+			<p:growl id="growl" showDetail="true" life="5000" />
+
+			<p:dataTable id="dtPerson" value="#{addressBookMBean.addressBookDAO}" var="address" lazy="true" paginator="true"
+				rowsPerPageTemplate="5,10,15,20,30" rows="10" currentPageReportTemplate="({currentPage} de {totalPages})"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				style="width: 820px; position: relative; left: 50%;; margin-left: -410px;">
+				<f:facet name="header">
+					<div style="float: left;">
+						<h:outputText value="Filtro:"/>
+						<p:inputText style="margin-left: 5px; margin-right: 5px;" value="#{addressBookMBean.addressBookDAO.filter}" id="iptFilter"/>
+						<p:commandButton icon="ui-icon-search" process="iptFilter" update="dtPerson"/>
+						<p:commandButton icon="ui-icon-trash" action="#{addressBookMBean.clearFiltro}"  update="dtPerson iptFilter"/>
+					</div>
+				
+				
+					<div style="text-align: right;">
+						<p:commandButton actionListener="#{addressBookMBean.prepareCreate}" oncomplete="PF('addressDialog').show();"
+							update=":addressDlg" value="Novo" icon="ui-icon-circle-plus">
+							<p:resetInput target=":addressCadForm" />
+						</p:commandButton>
+					</div>
+				</f:facet>
+				<p:column style="width: 15px;">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="Nome" width="300px;">
+					<h:outputText value="#{address.name}" />
+				</p:column>
+				<p:column headerText="Tipo Pessoa">
+					<h:outputText value="#{address.personType.label}" />
+				</p:column>
+				<p:column headerText="Telefone 1">
+					<h:outputText value="#{address.phoneOne}" />
+				</p:column>
+				<p:column headerText="Telefone 2">
+					<h:outputText value="#{address.phoneTwo}" />
+				</p:column>
+				<p:column style="width: 50px;">
+					<p:commandButton actionListener="#{addressBookMBean.prepareEdit(address)}" update=":addressDlg" process="dtPerson"
+						oncomplete="PF('addressDialog').show();" icon="ui-icon-pencil"
+						style="margin: 0px; padding: 0px; width: 20px; height: 20px;">
+						<p:resetInput target=":addressCadForm" />
+					</p:commandButton>
+					<p:commandButton update="dtPerson :formMain:growl" process="dtPerson" icon="ui-icon-trash" actionListener="#{addressBookMBean.deleteAddress(address.id)}"
+						style="margin: 0px; margin-left: 10px; padding: 0px; width: 20px; height: 20px;" >
+						 <p:confirm header="Confirmar" message="Você deseja realmente exluir este contato?" icon="ui-icon-alert" />
+					</p:commandButton>
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable id="dtAddresPhoneInDT" value="#{address.addressPhones}" var="phone"
+						style="width: 770px; margin-left:25px;" scrollable="true" scrollHeight="150"
+						emptyMessage="Nenhum item cadastrado.">
+						<p:column headerText="Nome" style="width: 22%;">
+							<h:outputText value="#{phone.name}" />
+						</p:column>
+						<p:column headerText="Função" style="width: 16%;">
+							<h:outputText value="#{phone.function}" />
+						</p:column>
+						<p:column headerText="Telefone 1" style="width: 15%;">
+							<h:outputText value="#{phone.phoneOne}" />
+						</p:column>
+						<p:column headerText="Telefone 2" style="width: 15%;">
+							<h:outputText value="#{phone.phoneTwo}" />
+						</p:column>
+						<p:column headerText="Email" style="width: 22%;">
+							<h:outputText value="#{phone.email}" />
+						</p:column>
+					</p:dataTable>
+				</p:rowExpansion>
+
+			</p:dataTable>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" >
+				</p:commandButton>
+			</p:confirmDialog>
+
+		</h:form>
+
+		<ui:include src="popupCad.xhtml" />
+	</ui:define>
+</ui:composition>
+
+

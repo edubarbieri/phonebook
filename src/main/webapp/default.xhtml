@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="/WEB-INF/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:define name="contentName">Home</ui:define>
+    <ui:define name="content">
+        <div >
+            <div style="">
+                <div style="width: 300px; height: 90px; 
+                     position: absolute;
+                     left: 50%; top: 50%;
+                     margin-left: -150px;
+                     margin-top: -45px;
+                     text-align: center;">
+<!--                     <h:graphicImage library="images" name="logo245x60.png"/> -->
+                    <a style="font-size: 18px !important; color: #0D3E56; font-weight: bold;" class="ui-widget"><h:outputText value="#{msg.appName}"/></a>
+                </div>
+
+            </div>
+
+        </div>
+    </ui:define>
+</ui:composition>

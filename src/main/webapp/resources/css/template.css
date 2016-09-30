@@ -1,0 +1,47 @@
+.ui-widget {
+	font-size: 12px !important;
+}
+
+html,body,#wrap {
+	/*height: 100%;*/
+	color: #404040; 
+	font-family: tahoma, sans-serif;
+        font-size: 12px !important;
+}
+
+body>#wrap {
+	height: auto;
+	min-height: 100%;
+}
+
+#main {
+	padding-bottom: 30px;
+} /* deve ser a mesma altura do rodap� */
+#footer {
+	position: relative;
+	margin-top: -30px;
+	/* A mesma altura do rodap�, o valor deve ser negativo */
+	height: 30px;
+	clear: both;
+	font-size: 11px;
+	text-align: center;
+	
+}
+
+.defaultDiv {
+	min-height: 300px;
+	margin-top: 15px;
+	
+}
+
+#divTitlePage{
+	margin-bottom: 20px; 
+	margin-top: 10px; 
+	font-weight: bold; 
+	font-size: 15px; 
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif"	
+}
+
+.ui-state-error{
+	border: 1px solid red !important;
+}

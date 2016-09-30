@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="/WEB-INF/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="contentName"><h:outputText value="#{msg.opcoes}"/> </ui:define>
+    <ui:define name="content">
+       <h:panelGrid columns="2">
+       		<h:outputText value="#{msg.nomeADP}"/>	
+       		<p:inputText value="#{sessionMBean.user.name}" size="30"/>	
+       
+       		<h:outputText value="#{msg.usernameADP}"/>	
+       		<h:outputText value="#{sessionMBean.user.username}"/>	
+
+       		<h:outputText value="#{msg.emailADP}"/>	
+       		<p:inputText value="#{sessionMBean.user.email}" size="30"/>       		
+       		<p:commandButton value="#{msg.alterarSenha}"/>
+       
+       </h:panelGrid>
+    </ui:define>
+</ui:composition>

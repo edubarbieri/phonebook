@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<h:outputStylesheet library="css" name="template.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/favicon.ico" />
+	<title><h:outputText value="#{msg.appName}" /> - <ui:insert name="contentName" /></title>
+	<ui:insert name="insertHeader" />
+</h:head>
+<h:body>
+	<h:form id="formDialog">
+		<p:confirmDialog header="Oooops!!!" severity="alert" visible="#{not empty param['expired']}"
+			message="#{msg.visualicaoExpirdaI}" widgetVar="viewExpiredDialog">
+			<p:commandButton type="button" value="#{msg.ok}" onclick="PF('viewExpiredDialog').hide();" />
+		</p:confirmDialog>
+		<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"
+			onerror="PF('statusDialog').hide();" />
+
+		<p:dialog modal="true" widgetVar="statusDialog" header="#{msg.carregandoPPP}" draggable="false" closable="false"
+			resizable="false">
+			<p:graphicImage library="images" name="ajaxloadingbar.gif" />
+		</p:dialog>
+	</h:form>
+
+	<div id="wrap">
+		<div id="header">
+			<h:form id="formMenu">
+				<p:menubar>
+					<p:menuitem action="/default?faces-redirect=true" ajax="false" value="#{msg.home}" icon="ui-icon-home">
+
+					</p:menuitem>
+					<p:menuitem value="Agenda" ajax="false" icon="ui-icon-note" action="/addressbook/main?faces-redirect=true" />
+					<f:facet name="options">
+						<div>
+							<p:splitButton value="#{sessionMBean.user.firstName}" icon="ui-icon-person"
+								onclick="PF('btnUser').show(); return;" widgetVar="btnUser" type="button">
+								<p:menuitem value="#{msg.opcoes}" icon="ui-icon-arrowrefresh-1-w" action="/user/option?faces-redirect=true"
+									ajax="false" />
+								<p:separator />
+								<p:menuitem action="#{loginMBean.logout}" value="#{msg.sair}" icon="ui-icon-extlink" ajax="false" />
+							</p:splitButton>
+						</div>
+
+					</f:facet>
+				</p:menubar>
+			</h:form>
+		</div>
+		<div id="main">
+			<div id="divTitlePage">
+				<h:outputText value=">" />
+				<ui:insert name="contentName" />
+			</div>
+			<ui:insert name="content">
+			</ui:insert>
+		</div>
+	</div>
+
+
+</h:body>
+</html>
+
